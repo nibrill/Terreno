@@ -2,7 +2,17 @@
 
 Free, offline-first app for collecting data in the field. **Build your own forms**, record measurements on your phone or laptop, and **export to Excel or CSV**. No account, no server, no tracking: your data stays on your device.
 
-English · Español (the UI switches automatically)
+Live demo: https://nibrill.github.io/FieldLog/ · UI in English and Spanish (switches automatically).
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/01-forms.png" width="19%" alt="Forms list" />
+  <img src="docs/screenshots/02-fill.png" width="19%" alt="Filling a form" />
+  <img src="docs/screenshots/03-records.png" width="19%" alt="Saved records" />
+  <img src="docs/screenshots/04-editor.png" width="19%" alt="Form editor" />
+  <img src="docs/screenshots/05-settings.png" width="19%" alt="Settings and backup" />
+</p>
 
 ## Features
 
