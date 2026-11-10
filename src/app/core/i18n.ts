@@ -9,7 +9,7 @@ export const LANGS: { code: Lang; name: string }[] = [
 type Dict = Record<string, string>;
 
 const es: Dict = {
-  'app.name': 'FieldLog',
+  'app.name': 'Terreno',
   'app.tagline': 'Datos de terreno para minería',
   'tab.forms': 'Formularios',
   'tab.records': 'Registros',
@@ -159,13 +159,13 @@ const es: Dict = {
   'settings.backup': 'Descargar respaldo (JSON)',
   'settings.restore': 'Restaurar desde respaldo',
   'settings.restored': 'Respaldo restaurado: {t} formularios, {r} registros.',
-  'settings.restoreError': 'Ese archivo no es un respaldo válido de FieldLog.',
+  'settings.restoreError': 'Ese archivo no es un respaldo válido de Terreno.',
   'settings.restoreHint':
     'Restaurar combina el respaldo con tus datos actuales. Los elementos con el mismo id se sobrescriben.',
   'settings.profileSaved': 'Perfil guardado',
   'settings.about': 'Acerca de',
   'settings.aboutText':
-    'FieldLog es software libre y de código abierto (MIT) para recopilar datos en terreno en faenas mineras: hidrogeología, geología, geotecnia, medio ambiente, seguridad y operaciones. Coordenadas UTM sobre WGS84/SIRGAS.',
+    'Terreno es software libre y de código abierto (MIT) para recopilar datos en terreno en faenas mineras: hidrogeología, geología, geotecnia, medio ambiente, seguridad y operaciones. Coordenadas UTM sobre WGS84/SIRGAS.',
   'settings.version': 'Versión {v}',
 
   'common.cancel': 'Cancelar',
@@ -174,7 +174,7 @@ const es: Dict = {
 };
 
 const en: Dict = {
-  'app.name': 'FieldLog',
+  'app.name': 'Terreno',
   'app.tagline': 'Field data for mining',
   'tab.forms': 'Forms',
   'tab.records': 'Records',
@@ -324,13 +324,13 @@ const en: Dict = {
   'settings.backup': 'Download backup (JSON)',
   'settings.restore': 'Restore from backup',
   'settings.restored': 'Backup restored: {t} forms, {r} records.',
-  'settings.restoreError': 'That file is not a valid FieldLog backup.',
+  'settings.restoreError': 'That file is not a valid Terreno backup.',
   'settings.restoreHint':
     'Restoring merges the backup with your current data. Items with the same id are overwritten.',
   'settings.profileSaved': 'Profile saved',
   'settings.about': 'About',
   'settings.aboutText':
-    'FieldLog is free, open-source software (MIT) for collecting field data at mine sites: hydrogeology, geology, geotechnics, environment, safety and operations. UTM coordinates on WGS84/SIRGAS.',
+    'Terreno is free, open-source software (MIT) for collecting field data at mine sites: hydrogeology, geology, geotechnics, environment, safety and operations. UTM coordinates on WGS84/SIRGAS.',
   'settings.version': 'Version {v}',
 
   'common.cancel': 'Cancel',

@@ -32,7 +32,7 @@ export class Db {
       });
       return new Db(db);
     } catch (e) {
-      console.error('FieldLog: IndexedDB unavailable', (e as Error)?.name, (e as Error)?.message);
+      console.error('Terreno: IndexedDB unavailable', (e as Error)?.name, (e as Error)?.message);
       return null;
     }
   }

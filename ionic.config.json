@@ -1,5 +1,5 @@
 {
-  "name": "FieldLog",
+  "name": "Terreno",
   "integrations": { "capacitor": {} },
   "type": "angular-standalone"
 }

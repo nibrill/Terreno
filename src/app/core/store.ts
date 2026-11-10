@@ -34,7 +34,7 @@ function lsSet(key: string, value: unknown): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
-    console.error('FieldLog: could not persist setting', e);
+    console.error('Terreno: could not persist setting', e);
   }
 }
 
@@ -244,7 +244,7 @@ export class Store {
   }
 
   private fail(e: unknown) {
-    console.error('FieldLog: could not save to device storage', e);
+    console.error('Terreno: could not save to device storage', e);
     this.persistent.set(false);
   }
 }

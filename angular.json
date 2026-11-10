@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "fieldlog": {
+    "terreno": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "fieldlog:build:production"
+              "buildTarget": "terreno:build:production"
             },
             "development": {
-              "buildTarget": "fieldlog:build:development"
+              "buildTarget": "terreno:build:development"
             },
             "ci": {
               "progress": false
@@ -87,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "fieldlog:build"
+            "buildTarget": "terreno:build"
           }
         },
         "test": {

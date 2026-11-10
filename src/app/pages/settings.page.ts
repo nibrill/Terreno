@@ -161,7 +161,7 @@ export class SettingsPage {
     const json = JSON.stringify(this.store.exportBackup(), null, 2);
     download(
       new Blob([json], { type: 'application/json' }),
-      `fieldlog-backup-${new Date().toISOString().slice(0, 10)}.json`
+      `terreno-backup-${new Date().toISOString().slice(0, 10)}.json`
     );
   }
 

@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'org.fieldlog.app',
-  appName: 'FieldLog',
+  appId: 'cl.terreno.app',
+  appName: 'Terreno',
   webDir: 'www',
 };
 

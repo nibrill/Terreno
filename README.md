@@ -1,9 +1,9 @@
-# FieldLog
+# Terreno
 
 **Field data collection for mining — built for Chilean operations.**
 Hydrogeology, geology, geotechnics, environment, safety and operations in one free app. Works **offline**, no account, no server, no tracking: your data stays on your device.
 
-**Live app:** https://nibrill.github.io/FieldLog/ — open it on your phone and use *Add to Home Screen* to install it.
+**Live app:** https://nibrill.github.io/Terreno/ — open it on your phone and use *Add to Home Screen* to install it.
 
 *Español: app gratuita de código abierto para tomar datos en terreno en faenas mineras de Chile. Funciona sin señal, con coordenadas UTM, fotos, gráficos y exportación a Excel. La interfaz está en español por defecto (y en inglés).*
 
@@ -76,3 +76,5 @@ Issues and pull requests are welcome — especially new form templates from real
 ## License
 
 [MIT](LICENSE)
+
+> Formerly "FieldLog". Internal storage keys keep the old name so existing data and backups keep working.

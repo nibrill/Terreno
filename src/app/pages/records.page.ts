@@ -388,7 +388,7 @@ export class RecordsPage {
   async exportXlsx() {
     const tables = this.tables();
     if (!tables.length) return;
-    await downloadXlsx(tables, `fieldlog_${this.stamp()}`);
+    await downloadXlsx(tables, `terreno_${this.stamp()}`);
     await this.say();
   }
 

@@ -58,7 +58,7 @@ import { CATEGORIES, Category } from '../models';
     <ion-header>
       <ion-toolbar color="dark">
         <ion-title>
-          <span class="brand">Field<b>Log</b></span>
+          <span class="brand"><b>Terreno</b></span>
           <span class="tag">{{ i18n.t('app.tagline') }}</span>
         </ion-title>
         <ion-buttons slot="end">

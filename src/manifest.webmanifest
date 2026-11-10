@@ -1,6 +1,6 @@
 {
-  "name": "FieldLog",
-  "short_name": "FieldLog",
+  "name": "Terreno",
+  "short_name": "Terreno",
   "description": "Datos de terreno para minería. Funciona sin señal. Exporta a Excel.",
   "start_url": "./",
   "scope": "./",

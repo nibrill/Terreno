@@ -108,7 +108,7 @@ export function safeFileName(name: string): string {
       .normalize('NFKD')
       .replace(/[^\w\-]+/g, '_')
       .replace(/^_+|_+$/g, '')
-      .slice(0, 60) || 'fieldlog'
+      .slice(0, 60) || 'terreno'
   );
 }
 
