@@ -73,6 +73,10 @@ Library forms live in `src/app/core/library.ts` as plain data (Spanish + English
 
 Issues and pull requests are welcome — especially new form templates from real operations (explosives, plant/metallurgy, maintenance, community relations…). Please run `npm test` and `npm run build` first.
 
+## Credits
+
+Created by **Nicolas Brill** ([@nibrill](https://github.com/nibrill)).
+
 ## License
 
 [MIT](LICENSE)

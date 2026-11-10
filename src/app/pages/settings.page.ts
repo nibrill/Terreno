@@ -132,6 +132,12 @@ export const APP_VERSION = '1.1.0';
         <ion-item lines="none">
           <ion-note>{{ i18n.t('settings.version', { v: version }) }}</ion-note>
         </ion-item>
+        <ion-item lines="none">
+          <ion-note>
+            {{ i18n.t('settings.credits') }} ·
+            <a href="https://github.com/nibrill/Terreno" target="_blank" rel="noopener">GitHub</a>
+          </ion-note>
+        </ion-item>
       </ion-list>
     </ion-content>
   `,

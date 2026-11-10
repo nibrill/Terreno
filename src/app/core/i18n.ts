@@ -167,6 +167,7 @@ const es: Dict = {
   'settings.aboutText':
     'Terreno es software libre y de código abierto (MIT) para recopilar datos en terreno en faenas mineras: hidrogeología, geología, geotecnia, medio ambiente, seguridad y operaciones. Coordenadas UTM sobre WGS84/SIRGAS.',
   'settings.version': 'Versión {v}',
+  'settings.credits': 'Creada por Nicolas Brill (nibrill)',
 
   'common.cancel': 'Cancelar',
   'common.delete': 'Eliminar',
@@ -332,6 +333,7 @@ const en: Dict = {
   'settings.aboutText':
     'Terreno is free, open-source software (MIT) for collecting field data at mine sites: hydrogeology, geology, geotechnics, environment, safety and operations. UTM coordinates on WGS84/SIRGAS.',
   'settings.version': 'Version {v}',
+  'settings.credits': 'Created by Nicolas Brill (nibrill)',
 
   'common.cancel': 'Cancel',
   'common.delete': 'Delete',

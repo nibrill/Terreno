@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "Offline-first field data app for mining in Chile: hydrogeology, geology, geotechnics, environment, safety. Custom forms, photos, UTM, charts, Excel export.",
   "license": "MIT",
+  "author": "Nicolas Brill (nibrill) <https://github.com/nibrill>",
   "keywords": ["mining", "chile", "hydrogeology", "geology", "field-data", "forms", "ionic", "angular", "pwa", "offline", "data-collection", "survey"],
   "scripts": {
     "ng": "ng",
