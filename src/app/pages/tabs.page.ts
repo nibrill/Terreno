@@ -11,6 +11,7 @@ import {
   documentTextOutline,
   listOutline,
   settingsOutline,
+  statsChartOutline,
 } from 'ionicons/icons';
 import { I18n } from '../core/i18n';
 
@@ -29,6 +30,10 @@ import { I18n } from '../core/i18n';
           <ion-icon name="list-outline"></ion-icon>
           <ion-label>{{ i18n.t('tab.records') }}</ion-label>
         </ion-tab-button>
+        <ion-tab-button tab="charts">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          <ion-label>{{ i18n.t('tab.charts') }}</ion-label>
+        </ion-tab-button>
         <ion-tab-button tab="settings">
           <ion-icon name="settings-outline"></ion-icon>
           <ion-label>{{ i18n.t('tab.settings') }}</ion-label>
@@ -40,6 +45,11 @@ import { I18n } from '../core/i18n';
 export class TabsPage {
   i18n = inject(I18n);
   constructor() {
-    addIcons({ documentTextOutline, listOutline, settingsOutline });
+    addIcons({
+      documentTextOutline,
+      listOutline,
+      settingsOutline,
+      statsChartOutline,
+    });
   }
 }

@@ -1,2 +1,43 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// FieldLog mining theme: safety orange on dark slate.
+:root {
+  --ion-color-primary: #e8730c;
+  --ion-color-primary-rgb: 232, 115, 12;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #cc650b;
+  --ion-color-primary-tint: #ea8125;
+
+  --ion-color-dark: #1f2933;
+  --ion-color-dark-rgb: 31, 41, 51;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1b242d;
+  --ion-color-dark-tint: #353e47;
+
+  --ion-color-secondary: #3e5463;
+  --ion-color-secondary-rgb: 62, 84, 99;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #364a57;
+  --ion-color-secondary-tint: #516572;
+
+  --ion-font-family: 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+ion-toolbar {
+  --border-width: 0;
+}
+
+// Dark system palette: keep the brand colors readable.
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-color-dark: #11181f;
+    --ion-color-dark-rgb: 17, 24, 31;
+    --ion-color-dark-shade: #0f151b;
+    --ion-color-dark-tint: #29303a;
+    --ion-color-primary: #f08a2d;
+    --ion-color-primary-rgb: 240, 138, 45;
+    --ion-color-primary-shade: #d37a28;
+    --ion-color-primary-tint: #f29742;
+  }
+}

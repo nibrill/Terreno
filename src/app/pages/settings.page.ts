@@ -1,8 +1,10 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   IonButton,
   IonContent,
   IonHeader,
+  IonInput,
   IonItem,
   IonList,
   IonListHeader,
@@ -18,12 +20,15 @@ import { download } from '../core/export';
 import { I18n, LANGS, Lang } from '../core/i18n';
 import { Store } from '../core/store';
 
-const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
+const MAX_BACKUP_BYTES = 150 * 1024 * 1024;
+export const APP_VERSION = '1.1.0';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
   imports: [
+    FormsModule,
+    IonInput,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -39,11 +44,45 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
   ],
   template: `
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar color="dark">
         <ion-title>{{ i18n.t('settings.title') }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>{{ i18n.t('settings.profile') }}</ion-label>
+        </ion-list-header>
+        <ion-item lines="none">
+          <ion-note class="ion-text-wrap">{{ i18n.t('settings.profileInfo') }}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            [label]="i18n.t('settings.operator')"
+            labelPlacement="stacked"
+            autocomplete="name"
+            [ngModel]="store.profile().operator"
+            (ngModelChange)="setProfile('operator', $event)"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            [label]="i18n.t('settings.company')"
+            labelPlacement="stacked"
+            [ngModel]="store.profile().company"
+            (ngModelChange)="setProfile('company', $event)"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            [label]="i18n.t('settings.site')"
+            labelPlacement="stacked"
+            [ngModel]="store.profile().site"
+            (ngModelChange)="setProfile('site', $event)"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
       <ion-list>
         <ion-item>
           <ion-select
@@ -73,9 +112,6 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
             {{ i18n.t('settings.restore') }}
           </ion-button>
           <ion-note class="ion-text-wrap hint">{{ i18n.t('settings.restoreHint') }}</ion-note>
-          <ion-button expand="block" fill="outline" (click)="examples()">
-            {{ i18n.t('settings.reset') }}
-          </ion-button>
         </div>
         <input
           #file
@@ -92,6 +128,9 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
         </ion-list-header>
         <ion-item lines="none">
           <ion-note class="ion-text-wrap">{{ i18n.t('settings.aboutText') }}</ion-note>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-note>{{ i18n.t('settings.version', { v: version }) }}</ion-note>
         </ion-item>
       </ion-list>
     </ion-content>
@@ -111,7 +150,8 @@ const MAX_BACKUP_BYTES = 25 * 1024 * 1024;
 })
 export class SettingsPage {
   i18n = inject(I18n);
-  private store = inject(Store);
+  store = inject(Store);
+  version = APP_VERSION;
   private toast = inject(ToastController);
 
   langs = LANGS;
@@ -142,9 +182,8 @@ export class SettingsPage {
     }
   }
 
-  async examples() {
-    this.store.addExamples();
-    await this.say(this.i18n.t('settings.resetDone'));
+  setProfile(key: 'operator' | 'company' | 'site', value: string | null | undefined) {
+    this.store.setProfile({ ...this.store.profile(), [key]: (value ?? '').toString() });
   }
 
   private async say(message: string) {

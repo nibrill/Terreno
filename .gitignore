@@ -11,3 +11,6 @@ Thumbs.db
 !.env.example
 /android/
 /ios/
+
+.tmp/
+.npm-cache/

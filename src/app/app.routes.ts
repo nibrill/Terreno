@@ -15,6 +15,11 @@ export const routes: Routes = [
           import('./pages/records.page').then((m) => m.RecordsPage),
       },
       {
+        path: 'charts',
+        loadComponent: () =>
+          import('./pages/chart.page').then((m) => m.ChartPage),
+      },
+      {
         path: 'settings',
         loadComponent: () =>
           import('./pages/settings.page').then((m) => m.SettingsPage),
@@ -25,6 +30,11 @@ export const routes: Routes = [
   {
     path: 'fill/:id',
     loadComponent: () => import('./pages/fill.page').then((m) => m.FillPage),
+  },
+  {
+    path: 'library',
+    loadComponent: () =>
+      import('./pages/library.page').then((m) => m.LibraryPage),
   },
   {
     path: 'editor/:id',

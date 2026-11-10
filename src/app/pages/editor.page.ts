@@ -33,7 +33,7 @@ import {
 import { I18n } from '../core/i18n';
 import { newId } from '../core/ids';
 import { Store } from '../core/store';
-import { FIELD_TYPES, FieldDef, FormTemplate } from '../models';
+import { Autofill, CATEGORIES, Category, FIELD_TYPES, FieldDef, FormTemplate } from '../models';
 
 interface EditableField extends FieldDef {
   /** Textarea-friendly version of `options`. */
@@ -65,7 +65,7 @@ interface EditableField extends FieldDef {
   ],
   template: `
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar color="dark">
         <ion-buttons slot="start">
           <ion-back-button defaultHref="/forms"></ion-back-button>
         </ion-buttons>
@@ -93,6 +93,17 @@ interface EditableField extends FieldDef {
             [autoGrow]="true"
             [(ngModel)]="description"
           ></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-select
+            [label]="i18n.t('editor.category')"
+            labelPlacement="stacked"
+            [(ngModel)]="category"
+          >
+            @for (c of categories; track c) {
+              <ion-select-option [value]="c">{{ i18n.t('cat.' + c) }}</ion-select-option>
+            }
+          </ion-select>
         </ion-item>
       </ion-list>
 
@@ -129,6 +140,34 @@ interface EditableField extends FieldDef {
                   [(ngModel)]="f.unit"
                 ></ion-input>
               </ion-item>
+              <ion-item>
+                <ion-input
+                  type="number"
+                  [label]="i18n.t('editor.min')"
+                  labelPlacement="stacked"
+                  [(ngModel)]="f.min"
+                ></ion-input>
+                <ion-input
+                  type="number"
+                  [label]="i18n.t('editor.max')"
+                  labelPlacement="stacked"
+                  [(ngModel)]="f.max"
+                ></ion-input>
+              </ion-item>
+            }
+            @if (f.type === 'text') {
+              <ion-item>
+                <ion-select
+                  [label]="i18n.t('editor.autofill')"
+                  labelPlacement="stacked"
+                  [(ngModel)]="f.autofill"
+                >
+                  <ion-select-option [value]="undefined">{{ i18n.t('editor.autofillNone') }}</ion-select-option>
+                  @for (a of autofills; track a) {
+                    <ion-select-option [value]="a">{{ i18n.t('autofill.' + a) }}</ion-select-option>
+                  }
+                </ion-select>
+              </ion-item>
             }
             @if (f.type === 'select') {
               <ion-item>
@@ -138,6 +177,13 @@ interface EditableField extends FieldDef {
                   [autoGrow]="true"
                   [(ngModel)]="f.optionsText"
                 ></ion-textarea>
+              </ion-item>
+            }
+            @if (f.type !== 'photo' && f.type !== 'checkbox') {
+              <ion-item>
+                <ion-toggle [(ngModel)]="f.sticky" justify="space-between">
+                  {{ i18n.t('editor.sticky') }}
+                </ion-toggle>
               </ion-item>
             }
             <ion-item>
@@ -208,6 +254,9 @@ export class EditorPage implements OnInit {
   private toast = inject(ToastController);
 
   types = FIELD_TYPES;
+  categories = CATEGORIES;
+  autofills: Autofill[] = ['operator', 'company', 'site'];
+  category: Category = 'custom';
   isNew = true;
   private id = '';
   private createdAt = Date.now();
@@ -233,6 +282,7 @@ export class EditorPage implements OnInit {
       this.id = existing.id;
       this.createdAt = existing.createdAt;
       this.name = existing.name;
+      this.category = existing.category;
       this.description = existing.description ?? '';
       this.fields.set(
         existing.fields.map((f) => ({
@@ -287,7 +337,19 @@ export class EditorPage implements OnInit {
         type: f.type,
         required: f.required,
       };
-      if (f.type === 'number' && f.unit?.trim()) def.unit = f.unit.trim();
+      if (f.type === 'number') {
+        if (f.unit?.trim()) def.unit = f.unit.trim();
+        const toNum = (x: unknown) =>
+          x === '' || x === null || x === undefined || !Number.isFinite(Number(x))
+            ? undefined
+            : Number(x);
+        const lo = toNum(f.min);
+        const hi = toNum(f.max);
+        if (lo !== undefined) def.min = lo;
+        if (hi !== undefined) def.max = hi;
+      }
+      if (f.type === 'text' && f.autofill) def.autofill = f.autofill;
+      if (f.sticky && f.type !== 'photo' && f.type !== 'checkbox') def.sticky = true;
       if (f.type === 'select') {
         def.options = f.optionsText
           .split('\n')
@@ -303,6 +365,7 @@ export class EditorPage implements OnInit {
       id: this.id,
       name,
       description: this.description.trim() || undefined,
+      category: this.category,
       fields,
       createdAt: this.createdAt,
       updatedAt: Date.now(),

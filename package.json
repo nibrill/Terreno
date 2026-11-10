@@ -1,9 +1,9 @@
 {
   "name": "fieldlog",
-  "version": "1.0.0",
-  "description": "Offline-first field data collection app. Build your own forms, record measurements, export to Excel/CSV. No account or server needed.",
+  "version": "1.1.0",
+  "description": "Offline-first field data app for mining in Chile: hydrogeology, geology, geotechnics, environment, safety. Custom forms, photos, UTM, charts, Excel export.",
   "license": "MIT",
-  "keywords": ["field-data", "forms", "ionic", "angular", "pwa", "offline", "data-collection", "survey"],
+  "keywords": ["mining", "chile", "hydrogeology", "geology", "field-data", "forms", "ionic", "angular", "pwa", "offline", "data-collection", "survey"],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

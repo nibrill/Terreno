@@ -1,12 +1,12 @@
 {
   "name": "FieldLog",
   "short_name": "FieldLog",
-  "description": "Offline-first field data collection. Build forms, record data, export to Excel.",
+  "description": "Datos de terreno para minería. Funciona sin señal. Exporta a Excel.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0b6e99",
+  "background_color": "#1f2933",
+  "theme_color": "#1f2933",
   "icons": [
     { "src": "assets/icon/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "assets/icon/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }

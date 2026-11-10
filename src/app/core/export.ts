@@ -1,30 +1,64 @@
-import { FieldValue, FormTemplate, RecordEntry } from '../models';
+import { FieldDef, FieldValue, FormTemplate, RecordEntry } from '../models';
+import { utmFromText } from './geo';
+
+export type Cell = string | number | boolean | null;
 
 export interface Table {
   headers: string[];
-  rows: FieldValue[][];
+  rows: Cell[][];
+}
+
+export interface ExportLabels {
+  recordedAt: string;
+  yes: string;
+  no: string;
+  photos: string; // e.g. "foto(s)"
+  utmNorth: string;
+  utmEast: string;
+  utmZone: string;
 }
 
 export function fieldHeader(f: { label: string; unit?: string }): string {
   return f.unit ? `${f.label} [${f.unit}]` : f.label;
 }
 
+/** Columns a single field expands to (GPS fields also yield UTM columns). */
+function columnsFor(f: FieldDef, L: ExportLabels): string[] {
+  const h = fieldHeader(f);
+  return f.type === 'gps'
+    ? [h, `${f.label} ${L.utmNorth}`, `${f.label} ${L.utmEast}`, `${f.label} ${L.utmZone}`]
+    : [h];
+}
+
+function cellsFor(f: FieldDef, v: FieldValue | undefined, L: ExportLabels): Cell[] {
+  const value = v ?? null;
+  switch (f.type) {
+    case 'checkbox':
+      return [value === true ? L.yes : value === false ? L.no : ''];
+    case 'photo':
+      return [Array.isArray(value) && value.length ? `${value.length} ${L.photos}` : ''];
+    case 'gps': {
+      const text = typeof value === 'string' ? value : '';
+      const u = utmFromText(text);
+      return u
+        ? [text, Math.round(u.northing), Math.round(u.easting), `${u.zone}${u.hemisphere}`]
+        : [text, '', '', ''];
+    }
+    default:
+      return [Array.isArray(value) ? value.join('; ') : value];
+  }
+}
+
 /** Turns the records of one template into a flat table. */
 export function buildTable(
   tpl: FormTemplate,
   records: RecordEntry[],
-  recordedAtHeader: string,
-  yes: string,
-  no: string
+  L: ExportLabels
 ): Table {
-  const headers = [recordedAtHeader, ...tpl.fields.map(fieldHeader)];
+  const headers = [L.recordedAt, ...tpl.fields.flatMap((f) => columnsFor(f, L))];
   const rows = records.map((r) => [
     new Date(r.createdAt).toISOString(),
-    ...tpl.fields.map((f) => {
-      const v = r.values[f.id] ?? null;
-      if (f.type === 'checkbox') return v === true ? yes : v === false ? no : '';
-      return v;
-    }),
+    ...tpl.fields.flatMap((f) => cellsFor(f, r.values[f.id], L)),
   ]);
   return { headers, rows };
 }
@@ -33,19 +67,24 @@ export function buildTable(
  * Spreadsheet apps execute cells that start with = + - @ as formulas
  * (CSV/formula injection). Neutralise text values; leave real numbers alone.
  */
-export function neutraliseFormula(v: FieldValue): FieldValue {
-  if (typeof v === 'string' && /^[=+\-@\t\r]/.test(v)) return `'${v}`;
-  return v;
+export function neutraliseFormula(v: Cell): Cell {
+  if (typeof v !== 'string') return v;
+  // A number or a "lat, lon" pair (e.g. "-33.44, -70.65") cannot be a formula.
+  if (NUMERIC_TEXT.test(v)) return v;
+  return /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
 }
 
-function csvCell(v: FieldValue): string {
+const NUMERIC_TEXT =
+  /^-?\d+(?:[.,]\d+)?(?:(?:\s*[,;]\s*|\s+)-?\d+(?:[.,]\d+)?)?$/;
+
+function csvCell(v: Cell): string {
   const s = v === null ? '' : String(neutraliseFormula(v));
   return /[",\n\r;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 export function toCsv(table: Table): string {
   const lines = [table.headers, ...table.rows].map((row) =>
-    row.map((c) => csvCell(c as FieldValue)).join(',')
+    row.map((c) => csvCell(c)).join(',')
   );
   // BOM so Excel opens UTF-8 (accents, µ, °) correctly.
   return '﻿' + lines.join('\r\n');
@@ -84,8 +123,32 @@ export function download(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export function downloadCsv(table: Table, baseName: string): void {
-  download(
+/**
+ * On phones, offer the native share sheet (WhatsApp, e-mail, Drive…) which is
+ * how field crews actually move files. Falls back to a normal download.
+ */
+export async function saveFile(blob: Blob, filename: string): Promise<void> {
+  const nav = navigator as Navigator & {
+    canShare?: (d: ShareData) => boolean;
+  };
+  const coarse =
+    typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
+  if (coarse && nav.share && nav.canShare) {
+    const file = new File([blob], filename, { type: blob.type });
+    if (nav.canShare({ files: [file] })) {
+      try {
+        await nav.share({ files: [file], title: filename });
+        return;
+      } catch (e) {
+        if ((e as DOMException)?.name === 'AbortError') return; // user cancelled
+      }
+    }
+  }
+  download(blob, filename);
+}
+
+export async function downloadCsv(table: Table, baseName: string): Promise<void> {
+  await saveFile(
     new Blob([toCsv(table)], { type: 'text/csv;charset=utf-8' }),
     `${safeFileName(baseName)}.csv`
   );
@@ -104,14 +167,20 @@ export async function downloadXlsx(
       table.headers,
       ...table.rows.map((r) => r.map((c) => neutraliseFormula(c))),
     ];
-    XLSX.utils.book_append_sheet(
-      wb,
-      XLSX.utils.aoa_to_sheet(aoa),
-      sheetName(name, used)
-    );
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = table.headers.map((h, i) => ({
+      wch: Math.min(
+        40,
+        Math.max(
+          h.length,
+          ...table.rows.slice(0, 200).map((r) => String(r[i] ?? '').length)
+        ) + 2
+      ),
+    }));
+    XLSX.utils.book_append_sheet(wb, ws, sheetName(name, used));
   }
   const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  download(
+  await saveFile(
     new Blob([out], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     }),
