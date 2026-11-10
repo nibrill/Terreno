@@ -1,0 +1,5 @@
+{
+  "name": "FieldLog",
+  "integrations": { "capacitor": {} },
+  "type": "angular-standalone"
+}
